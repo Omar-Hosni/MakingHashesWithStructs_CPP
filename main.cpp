@@ -19,7 +19,7 @@ namespace std
   {
     return hash<std::string>()(key.Name);
   }
-  }
+  };
 }
 
 
@@ -44,5 +44,27 @@ int main()
   CityRecord& berlinData = cityMap["Berlin"];
   berlinData.Population;
   
+  //let's try to access a key that is not there
+  CityRecord &CairoData = cityMap["Cairo"]; // in this situation it will not find the key and it will insert it to the map
   
+  //but that can not happen with constants, so in this case we need to check if the key is already there before we access
+  
+  const auto& cities = cityMap;
+  if(cities.find("Cairo") != cities.end())
+  {
+   const &CairoData = cityMap["Cairo"]; 
+  }
+  
+  //now we can iterate through the map using a C++ 17 feature in ranged-based for loop that returns array of key,value pairs
+  for(auto&[name,city] : cityMap)
+   {
+        std::cout<<name<<"\n Population: "<<city.Population<<std::endl;
+   }
+      
+   //the above iterating works exactly as the one below
+   for(auto &kv:cityMap)
+   {
+     const string & name = kv.first; //the name is the key
+     CityRecord& city = kv.second; //the values
+   }
 }
